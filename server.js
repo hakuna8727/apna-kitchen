@@ -15,8 +15,8 @@ const ADMIN_EMAILS = (process.env.ADMIN_EMAILS || 'namdhari8727@gmail.com,hakuna
     .filter(Boolean);
 
 // Serve uploaded files
-app.use('/uploads', express.static(path.join(__dirname, 'public', 'uploads')));
-app.use(express.static('public'));
+app.use('/uploads', express.static(path.join(__dirname, 'Public', 'uploads')));
+app.use(express.static(path.join(__dirname, 'Public')));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
@@ -207,7 +207,7 @@ async function channelStatsResponse(channelUsername, currentUsername) {
 
 // --- MULTER SETUP ---
 const storage = multer.diskStorage({
-    destination: (req, file, cb) => cb(null, path.join(__dirname, 'public', 'uploads')),
+    destination: (req, file, cb) => cb(null, path.join(__dirname, 'Public', 'uploads')),
     filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname.replace(/\s+/g, '_'))
 });
 const upload = multer({ storage });
