@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - APNA KITCHEN</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1>
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li id="register-link"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="about-us">
+            <h2>Our Story</h2>
+            <p>Welcome to APNA KITCHEN, your go-to community for sharing and discovering delicious recipes from around the world. We believe that food brings people together, and our mission is to create a space where home cooks and food enthusiasts can connect, share their culinary creations, and inspire one another.</p>
+            <p>Our journey began with a simple idea: to build a platform where every recipe has a story. Whether it's a cherished family recipe passed down through generations or a brand-new creation from your kitchen, we're here to celebrate the joy of cooking and sharing.</p>
+            
+            <h3>Meet the Team</h3>
+            <div class="team-grid">
+                <div class="team-member">
+                    <img class="team-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect fill='%23f5f7fa' width='100%' height='100%'/><circle cx='60' cy='40' r='28' fill='%23e0e7ef'/><rect x='20' y='78' width='80' height='30' rx='14' fill='%23e0e7ef'/></svg>" alt="Hakam Singh">
+                    <div>
+                        <h4>Mr. Hakam Singh</h4>
+                        <p>Founder & Head Chef</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img class="team-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect fill='%23f5f7fa' width='100%' height='100%'/><circle cx='60' cy='40' r='28' fill='%23e0e7ef'/><rect x='20' y='78' width='80' height='30' rx='14' fill='%23e0e7ef'/></svg>" alt="Komalpreet">
+                    <div>
+                        <h4>Miss Komalpreet</h4>
+                        <p>Community Manager</p>
+                    </div>
+                </div>
+                <div class="team-member">
+                    <img class="team-avatar" src="data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='120' height='120'><rect fill='%23f5f7fa' width='100%' height='100%'/><circle cx='60' cy='40' r='28' fill='%23e0e7ef'/><rect x='20' y='78' width='80' height='30' rx='14' fill='%23e0e7ef'/></svg>" alt="Jasnoor">
+                    <div>
+                        <h4>Miss Jasnoor Kaur</h4>
+                        <p>Community Manager</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 APNA KITCHEN. All rights reserved.</p>
+    </footer>
+<script src="js/nav.js"></script>
+<script>
+        const loginLink = document.getElementById('login-link');
+        const registerLink = document.getElementById('register-link');
+        const logoutLink = document.getElementById('logout-link');
+
+        fetch('/api/user/status', {
+            credentials: 'include'  // Include session cookie
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isLoggedIn) {
+                    registerLink.style.display = 'none';
+                    loginLink.innerHTML = `<a href="#">${data.username}</a>`;
+                    logoutLink.style.display = 'block'; // Show the logout link
+                } else {
+                    loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                    registerLink.style.display = 'block';
+                    logoutLink.style.display = 'none'; // Hide the logout link
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user status:', error);
+                loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                registerLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+            });
+</script>
+</body>
+</html>

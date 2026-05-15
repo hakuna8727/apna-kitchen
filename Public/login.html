@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1>
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li id="register-link"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <h2>Login</h2>
+            <form id = "login-form">
+                <label for="username">Username or Email:</label>
+                <input type="text" id="username" name="username" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+                
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </main>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Now this successfully selects the form element:
+        const loginForm = document.getElementById('login-form'); 
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', async (e) => {
+                e.preventDefault();
+
+                const input = document.getElementById('username').value; 
+                const password = document.getElementById('password').value;
+
+                // Determine if input is email or username
+                const isEmail = input.includes('@');
+                const loginData = { password };
+                
+                if (isEmail) {
+                    loginData.email = input;
+                } else {
+                    loginData.username = input;
+                }
+
+                try {
+                    console.log('Sending login data:', loginData);
+                    
+                    const response = await fetch('/login', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        credentials: 'include',  // Include session cookie
+                        body: JSON.stringify(loginData)
+                    });
+
+                    console.log('Login response status:', response.status);
+                    const data = await response.json();
+                    console.log('Login response data:', data);
+                    
+                    if (response.ok && data.success) {
+                        // CRITICAL STEP: Save the User ID to localStorage 
+                        if (data.userId) {
+                            localStorage.setItem('user_id', data.userId); 
+                            console.log('Logged in as:', data.username);
+                        }
+                        
+                        alert('Login successful!');
+                        window.location.href = '/index.html';
+                    } else {
+                        console.error('Login failed:', data.message);
+                        alert(`Login failed: ${data.message || 'Invalid credentials.'}`);
+                    }
+                } catch (error) {
+                    console.error('Network error during login:', error);
+                    alert('An error occurred. Please try again.');
+                }
+            });
+        }
+    });
+    </script>
+
+    <footer>
+        <p>&copy; 2025 APNA KITCHEN. All rights reserved.</p>
+    </footer>
+</body>
+</html>

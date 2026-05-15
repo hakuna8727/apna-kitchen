@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>All Recipes</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1>
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                 <li><a href="my-recipes.html">My Recipes</a></li>
+                <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li id="register-link"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+    <div class="container">
+        <h2>All Recipes</h2>
+        <div class="search-bar">
+            <input type="text" id="searchInput" placeholder="Search for recipes...">
+            <select id="categorySelect" aria-label="Filter by category">
+                <option value="any">All Categories</option>
+                <option value="soups">Soups</option>
+                <option value="stews">Stews & Curries</option>
+                <option value="grains">Grains & Starches</option>
+                <option value="baked">Baked Goods & Pastries</option>
+                <option value="meal">Meals</option>
+                <option value="salads">Salads & Sides</option>
+                <option value="desserts">Desserts</option>
+            </select>
+            <button id="searchButton">Search</button>
+        </div>
+        <div class="recipe-grid" id="recipes-container">
+            <a href="recipe-detail.html?id=${recipe._id}" class="read-more">View Recipe</a>
+            </div>
+    </div>
+</main>
+    <main>
+        <section class="recipes-list">
+            <h2>Our Complete Recipe Collection</h2>
+            <div class="recipe-grid" id="recipe-container">
+                </div>
+        </section>
+    </main>
+<script src="/js/recipes.js"></script>
+    <footer>
+        <p>&copy; 2025 APNA KITCHEN. All rights reserved.</p>
+    </footer>
+<script>
+    const truncateText = (text, maxLength) => {
+        if (text && text.length > maxLength) {
+            return text.substring(0, maxLength) + '... <a href="#" class="read-more-inline">Read more</a>';
+        }
+        return text;
+    };
+    document.addEventListener('DOMContentLoaded', () => {
+        const MAX_DESC_LENGTH = 80; // Set your maximum character length here
+
+        // category keyword map for inference when recipe metadata lacks category
+        const CATEGORY_KEYWORDS = {
+            soups: ['soup','broth','bisque','consomm','stock'],
+            stews: ['stew','curry','ragout'],
+            grains: ['rice','pilaf','risotto','quinoa','couscous','grain','starch','noodle','pasta'],
+            baked: ['bread','cake','bake','pastry','cookie','pie','tart'],
+            meal: ['tofu','paneer','dal','lentil','casserole','main','entree','dinner','lunch','mutton','turkey','duck','cutlet','fillet','kebab','burger','sandwich','wrap','biryani','curry','gravy','masala'],
+            salads: ['salad','side','coleslaw','greens'],
+            desserts: ['dessert','pudding','sweet','tart','cake','pie','ice cream']
+        };
+
+        let allRecipes = [];
+
+        function inferCategoryForRecipe(r){
+            if(!r) return 'any';
+            if(r.category) return String(r.category).toLowerCase();
+            const bag = ((r.title||'') + ' ' + (r.description||'') + ' ' + (r.ingredients||'')).toLowerCase();
+            for(const cat of Object.keys(CATEGORY_KEYWORDS)){
+                const keys = CATEGORY_KEYWORDS[cat];
+                if(keys.some(k => bag.indexOf(k) !== -1)) return cat;
+            }
+            return 'any';
+        }
+
+        function renderRecipes(filteredList){
+            // Render filtered (category/search) recipes in #recipes-container (All Recipes)
+            const topContainer = document.getElementById('recipes-container');
+            if (topContainer) {
+                topContainer.innerHTML = '';
+                filteredList.forEach(recipe => {
+                    const truncatedDescription = truncateText(recipe.description || '', MAX_DESC_LENGTH);
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card';
+                    const img = recipe.imageUrl ? `<img src="${recipe.imageUrl}" alt="${recipe.title || ''}">` : '';
+                    const id = recipe._id || recipe.id || '';
+                    const viewLink = `recipe-detail.html?id=${id}`;
+                    const category = recipe._inferredCategory || '';
+                    card.innerHTML = `
+                        ${img}
+                        <h3>${recipe.title || ''}</h3>
+                        <p>${truncatedDescription}</p>
+                        <div class="card-meta"><span class="card-category">${category ? category : ''}</span></div>
+                        <a href="${viewLink}" class="read-more">View Recipe</a>
+                    `;
+                    topContainer.appendChild(card);
+                });
+                // Add event listener for "Read more" inline links using event delegation
+                topContainer.addEventListener('click', (e) => {
+                    const inlineLink = e.target.closest('.read-more-inline');
+                    if (inlineLink) {
+                        e.preventDefault();
+                        const parent = inlineLink.closest('.recipe-card');
+                        if (parent) {
+                            const link = parent.querySelector('.read-more');
+                            if (link) window.location.href = link.href;
+                        }
+                    }
+                });
+            }
+
+            // Always render ALL recipes in #recipe-container (Our Complete Recipe Collection)
+            const allContainer = document.getElementById('recipe-container');
+            if (allContainer) {
+                allContainer.innerHTML = '';
+                allRecipes.forEach(recipe => {
+                    const truncatedDescription = truncateText(recipe.description || '', MAX_DESC_LENGTH);
+                    const card = document.createElement('div');
+                    card.className = 'recipe-card';
+                    const img = recipe.imageUrl ? `<img src="${recipe.imageUrl}" alt="${recipe.title || ''}">` : '';
+                    const id = recipe._id || recipe.id || '';
+                    const viewLink = `recipe-detail.html?id=${id}`;
+                    const category = recipe._inferredCategory || '';
+                    card.innerHTML = `
+                        ${img}
+                        <h3>${recipe.title || ''}</h3>
+                        <p>${truncatedDescription}</p>
+                        <div class="card-meta"><span class="card-category">${category ? category : ''}</span></div>
+                        <a href="${viewLink}" class="read-more">View Recipe</a>
+                    `;
+                    allContainer.appendChild(card);
+                });
+                allContainer.addEventListener('click', (e) => {
+                    const inlineLink = e.target.closest('.read-more-inline');
+                    if (inlineLink) {
+                        e.preventDefault();
+                        const parent = inlineLink.closest('.recipe-card');
+                        if (parent) {
+                            const link = parent.querySelector('.read-more');
+                            if (link) window.location.href = link.href;
+                        }
+                    }
+                });
+            }
+        }
+
+        function applyFilters(){
+            const q = (document.getElementById('searchInput').value || '').toLowerCase().trim();
+            const cat = document.getElementById('categorySelect').value;
+            let filtered = allRecipes.slice();
+            if(cat && cat !== 'any'){
+                filtered = filtered.filter(r => (r._inferredCategory || '').toLowerCase() === cat);
+            }
+            if(q){
+                filtered = filtered.filter(r => {
+                    const bag = ((r.title||'') + ' ' + (r.description||'') + ' ' + (r.ingredients||'')).toLowerCase();
+                    return bag.indexOf(q) !== -1;
+                });
+            }
+            renderRecipes(filtered);
+        }
+
+        // fetch recipes and prepare inferred categories
+        fetch('/api/recipes', {
+            credentials: 'include'  // Include session cookie
+        })
+            .then(response => response.json())
+            .then(recipes => {
+                allRecipes = (Array.isArray(recipes) ? recipes : []).map(r => { r._inferredCategory = inferCategoryForRecipe(r); return r; });
+                renderRecipes(allRecipes);
+            })
+            .catch(error => console.error('Error fetching recipes:', error));
+
+        // wire up search and category select
+        const searchInput = document.getElementById('searchInput');
+        const searchButton = document.getElementById('searchButton');
+        const categorySelect = document.getElementById('categorySelect');
+
+        let debounceTimer = null;
+        searchInput.addEventListener('input', ()=>{
+            clearTimeout(debounceTimer);
+            debounceTimer = setTimeout(applyFilters, 250);
+        });
+        searchButton.addEventListener('click', (e)=>{ e.preventDefault(); applyFilters(); });
+        categorySelect.addEventListener('change', applyFilters);
+    });
+</script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginLink = document.getElementById('login-link');
+        const registerLink = document.getElementById('register-link');
+        const logoutLink = document.getElementById('logout-link');
+
+        fetch('/api/user/status', {
+            credentials: 'include'  // Include session cookie
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isLoggedIn) {
+                    registerLink.style.display = 'none';
+                    loginLink.innerHTML = `<a href="#">${data.username}</a>`;
+                    logoutLink.style.display = 'block'; // Show the logout link
+                } else {
+                    loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                    registerLink.style.display = 'block';
+                    logoutLink.style.display = 'none'; // Hide the logout link
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user status:', error);
+                loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                registerLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+            });
+    });
+</script>
+</body>
+</html>

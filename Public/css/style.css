@@ -1,0 +1,889 @@
+/* Category label for recipe cards */
+.card-meta {
+    margin: 0.5em 0 0.5em 0;
+    min-height: 1.5em;
+}
+.card-category {
+    display: inline-block;
+    background: #f3e9d2;
+    color: #a05a2c;
+    font-size: 0.95em;
+    font-weight: 500;
+    border-radius: 12px;
+    padding: 2px 12px;
+    margin-top: 2px;
+    margin-bottom: 2px;
+    letter-spacing: 0.02em;
+    box-shadow: 0 1px 2px rgba(160,90,44,0.07);
+}
+/* General Body and Layout */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+.container {
+    width: 80%;
+    margin: 0 auto;
+}
+
+/* Header and Navigation */
+header {
+    background-color: #fff;
+    padding: 1em 0;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 90%;
+    margin: 0 auto;
+}
+
+.logo h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+nav ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+}
+
+nav a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav a:hover {
+    color: #e67e22;
+}
+
+/* Hero Section */
+.hero {
+    background: url('../images/hero-bg.jpg') no-repeat center center/cover;
+    color: #fff;
+    text-align: center;
+    padding: 80px 20px;
+    margin-bottom: 2em;
+}
+
+.hero-content h2 {
+    font-size: 2.5em;
+    margin-bottom: 0.5em;
+}
+
+.hero-content p {
+    font-size: 1.2em;
+    max-width: 600px;
+    margin: 0 auto 1em;
+}
+
+.cta-button {
+    background-color: #e67e22;
+    color: #fff;
+    padding: 12px 24px;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.3s;
+}
+
+.cta-button:hover {
+    background-color: #d35400;
+}
+
+/* Recipe Grid and Cards */
+.recipe-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2em;
+    width: 90%;
+    margin: 0 auto;
+    margin-top: 5ch;
+}
+
+.recipe-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+    
+    /* 🌟 NEW: Enable Flexbox for vertical alignment 🌟 */
+    display: flex; 
+    flex-direction: column; 
+    /* 🌟 NEW: Give the card a fixed height 🌟 */
+    height: 450px; 
+}
+
+.recipe-card:hover {
+    transform: translateY(-5px);
+}
+
+.recipe-card img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.recipe-card h3 {
+    padding: 0 1em;
+}
+
+.recipe-card p {
+    padding: 0 1em;
+    font-size: 0.9em;
+    /* This allows the description to consume all available space */
+    flex-grow: 1; 
+}
+
+.read-more {
+    display: block;
+    background-color: #e67e22;
+    color: #fff;
+    text-align: center;
+    padding: 10px;
+    text-decoration: none;
+    border-radius: 5px;
+    
+    /* 🌟 NEW: Pushes the element to the bottom edge 🌟 */
+    margin-top: auto; 
+    /* Adjust margin and width to prevent it from hugging the edge too much */
+    width: calc(100% - 2em);
+    margin-left: 1em;
+    margin-right: 1em;
+    margin-bottom: 1em;
+    box-sizing: border-box; /* Include padding in width calculation */
+}
+ 
+/* Submit Form */
+.submit-form {
+    width: 80%;
+    margin: 2em auto;
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.submit-form form {
+    display: flex;
+    flex-direction: column;
+    gap: 1em;
+}
+
+.submit-form label {
+    font-weight: bold;
+}
+
+.submit-form input[type="text"],
+.submit-form textarea,
+.submit-form input[type="file"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.submit-form button {
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 12px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+}
+
+/* Image URL should appear as a single-line field */
+.submit-form textarea#imageUrl,
+.submit-form textarea#image-url,
+.submit-form textarea[name="imageUrl"],
+.submit-form textarea[name="image-url"],
+.submit-form input#imageUrl,
+.submit-form input#image-url,
+.submit-form input[name="imageUrl"],
+.submit-form input[name="image-url"],
+.submit-form textarea.image-url {
+    height: 38px; /* single-line appearance */
+    max-height: 38px;
+    line-height: 1.2;
+    resize: none; /* prevent vertical resize */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Fallback: cap the last textarea inside the submit form to single-line appearance */
+.submit-form textarea:last-of-type {
+    height: 38px;
+    max-height: 38px;
+    resize: none;
+}
+
+/* Make the Instructions field adjustable in the submit form */
+.submit-form textarea#instructions,
+.submit-form textarea[name="instructions"],
+.submit-form textarea.instructions {
+    height: 180px; /* larger default so users can see more steps */
+    max-height: 600px;
+    resize: vertical; /* allow the user to expand/shrink vertically */
+    box-sizing: border-box;
+}
+
+/* Style the recipe-detail instructions area as a scrollable, highlighted card */
+#recipe-instructions {
+    max-height: 420px;
+    overflow-y: auto;
+    background: #ffffff;
+    border-left: 4px solid #e67e22;
+    padding: 14px;
+    border-radius: 6px;
+    box-shadow: inset 0 1px 0 rgba(255,255,255,0.6);
+    white-space: pre-wrap;
+    line-height: 1.7;
+    color: #333;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 1em 0;
+    background-color: #333;
+    color: #fff;
+    margin-top: 2em;
+}
+/* Hero Section - Modified for Slideshow */
+.hero {
+    position: relative; /* This is crucial for positioning the slideshow images */
+    overflow: hidden; /* Hides any part of the image that goes beyond the section */
+    height: 500px; /* Or a fixed height you prefer */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    text-align: center;
+}
+
+/* Slideshow Container */
+.slideshow-container {
+    position: absolute; /* Takes it out of the normal document flow */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1; /* Puts the slideshow images behind the text */
+}
+
+.hero-slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures the image covers the entire container without distortion */
+    opacity: 0; /* Initially hide all images */
+    transition: opacity 1.5s ease-in-out; /* Smooth fade transition */
+}
+
+.hero-slide.active {
+    opacity: 1; /* Show the active image */
+}
+
+/* Hero Content - Placed on top of the slideshow */
+.hero-content {
+    position: relative; /* Makes sure the text is on top of the slideshow */
+    z-index: 2; /* Puts the text on top of the slideshow (higher than 1) */
+    background-color: rgba(0, 0, 0, 0.4); /* Adds a subtle dark overlay for text readability */
+    padding: 2em;
+    border-radius: 8px;
+}
+
+.delete-button {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.delete-button:hover {
+    background-color: #c0392b;
+}
+.recipe-detail-section{
+    max-width: 1100px;
+    margin: 24px auto;
+    background: #fff;
+    padding: 24px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    grid-auto-rows: auto;
+    gap: 20px;
+    align-items: start;
+}
+
+/* Force primary content into left column and image into the right column */
+#recipe-title { grid-column: 1 / 2; font-size: 2rem; margin: 0 0 8px 0; color: #2c3e50; }
+#recipe-description { grid-column: 1 / 2; color: #555; line-height: 1.6; margin-top: 8px; }
+
+/* Put the image into the right column and span vertically */
+#recipe-image {
+    grid-column: 2 / 3;
+    grid-row: 1 / 4;
+    width: 100%;
+    height: 320px;
+    object-fit: cover;
+    border-radius: 6px;
+    display: block;
+    justify-self: end;
+}
+
+/* Ensure headings and content remain in the left column */
+.recipe-detail-section h3 { grid-column: 1 / 2; margin-top: 18px; margin-bottom: 8px; color: #333; }
+
+#recipe-ingredients, #recipe-instructions {
+    grid-column: 1 / 2;
+    background: #fafafa;
+    padding: 12px;
+    border-radius: 6px;
+    border: 1px solid #eee;
+    white-space: pre-wrap;
+    line-height: 1.6;
+    color: #444;
+}
+
+.recipe-detail-section pre#recipe-ingredients { margin: 0 0 12px 0; }
+.recipe-detail-section pre#recipe-instructions { margin: 0; }
+
+/* If you later add action buttons (edit/delete), these live near title */
+.action-buttons { display:flex; gap:8px; margin-top:10px; grid-column:1 / 2; }
+.action-buttons .edit-btn, .action-buttons .delete-btn { padding:8px 12px; border-radius:6px; font-size:0.95rem; cursor:pointer; border:none; }
+.action-buttons .edit-btn { background:#3498db; color:#fff; }
+.action-buttons .delete-btn { background:#e74c3c; color:#fff; }
+
+.reviews-section { max-width: 1100px; margin: 28px auto; padding: 0 22px; }
+
+@media (max-width: 900px) {
+    .recipe-detail-section { grid-template-columns: 1fr; padding: 16px; gap: 16px; }
+    #recipe-image { grid-column: 1 / -1; height: 260px; grid-row: auto; justify-self: center; }
+}
+
+/* Animations for recipe detail (fade/slide on load) */
+@keyframes rk-fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes rk-slideUp { from { transform: translateY(14px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+
+.recipe-detail-section #recipe-image,
+.recipe-detail-section #recipe-title,
+.recipe-detail-section #recipe-description,
+.recipe-detail-section #recipe-ingredients,
+.recipe-detail-section #recipe-instructions {
+    opacity: 0; /* start hidden until JS adds .loaded */
+    transform: translateY(6px);
+}
+
+.recipe-detail-section.loaded #recipe-title { animation: rk-slideUp 480ms cubic-bezier(.2,.9,.2,1) 0s both; }
+.recipe-detail-section.loaded #recipe-image { animation: rk-fadeIn 560ms ease 90ms both; }
+.recipe-detail-section.loaded #recipe-description { animation: rk-slideUp 520ms cubic-bezier(.2,.9,.2,1) 120ms both; }
+.recipe-detail-section.loaded #recipe-ingredients { animation: rk-fadeIn 520ms ease 200ms both; }
+.recipe-detail-section.loaded #recipe-instructions { animation: rk-fadeIn 520ms ease 260ms both; }
+
+/* subtle focus/hover for image */
+.recipe-detail-section.loaded #recipe-image { transition: transform 0.35s ease, box-shadow 0.35s ease; }
+.recipe-detail-section.loaded #recipe-image:hover { transform: scale(1.01); box-shadow: 0 10px 30px rgba(0,0,0,0.08); }
+
+.auth-container {
+    background-color: #ffffff;
+    justify-content: center;
+    margin-top: 50px;
+    margin-left:450px;
+    padding: 40px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+.auth-container h2 {
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.auth-container label {
+    display: block;
+    text-align: left;
+    margin-bottom: 8px;
+    color: #555;
+    font-weight: bold;
+}
+.auth-container input[type="text"],
+.auth-container input[type="password"] {
+    width: 95%;
+    padding: 12px;
+    margin-bottom: 20px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.auth-container button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    background-color: #ff6347; /* A nice red-orange color */
+    color: white;
+    font-size: 18px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.auth-container button:hover {
+    background-color: #e5533d;
+}
+
+/* Style for the main review container */
+.reviews-section {
+    max-width: 800px;
+    margin: 40px auto; /* Center the section on the page */
+    padding: 20px;
+    border-top: 2px solid #ddd; /* Light separator line */
+}
+
+.reviews-section h2 {
+    color: #333;
+    font-size: 1.8em;
+    border-bottom: 2px solid #f2f2f2;
+    padding-bottom: 10px;
+    margin-bottom: 25px;
+}
+
+/* Container for all displayed reviews */
+#reviews-container {
+    padding-top: 20px;
+}
+
+/* Style for each individual review */
+.user-review {
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.user-review h4 {
+    margin-top: 0;
+    color: #007BFF; /* A nice highlight color for the username */
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.user-review .rating {
+    font-size: 1.2em;
+    color: gold; /* Making the stars pop */
+    margin: 5px 0 10px 0;
+}
+
+.user-review p {
+    line-height: 1.5;
+    color: #555;
+}
+
+.user-review small {
+    display: block;
+    margin-top: 10px;
+    color: #999;
+    font-size: 0.85em;
+}
+
+.user-review hr {
+    border: none;
+    border-top: 1px dashed #ddd;
+    margin: 10px 0;
+}
+
+/* Style for the form container */
+.review-form-container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    margin-bottom: 30px;
+}
+
+.review-form-container h3 {
+    color: #444;
+    font-size: 1.4em;
+    margin-top: 0;
+    margin-bottom: 15px;
+}
+
+#review-form label {
+    display: block;
+    margin-top: 15px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #333;
+}
+
+#review-form input[type="text"], 
+#review-form select, 
+#review-form textarea {
+    width: 100%; /* Make fields full width */
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensures padding doesn't widen the elements */
+    font-size: 1em;
+}
+
+#review-form textarea {
+    resize: vertical; /* Allow vertical resizing, but not horizontal */
+}
+
+/* Style for the submit button */
+#review-form button[type="submit"] {
+    background-color: #28a745; /* Green color for submit/success */
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1em;
+    transition: background-color 0.3s ease;
+}
+
+#review-form button[type="submit"]:hover {
+    background-color: #218838;
+}
+
+/* In css/style.css */
+.delete-review-btn {
+    float: right; /* Puts the button on the right */
+    background-color: #dc3545; /* Red for deletion */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.8em;
+    margin-left: 10px;
+    transition: background-color 0.2s;
+}
+
+.delete-review-btn:hover {
+    background-color: #c82333;
+}
+/* 1. Container for Input and Button */
+.search-bar {
+    /* Use flexbox to align the input and button side-by-side */
+    display: flex;
+    /* Center the search bar horizontally on the page */
+    justify-content: center;
+    /* Add some space below the search bar */
+    margin: 20px 0 40px 0;
+}
+
+/* 2. Style the Text Input Field */
+#searchInput {
+    /* Make the input take up most of the space */
+    width: 350px;
+    padding: 12px 18px; /* Add internal padding */
+    font-size: 16px;
+    
+    /* Style the border */
+    border: 2px solid #ccc;
+    /* Remove the right border to visually merge with the button */
+    border-right: none;
+    
+    /* Round the corners only on the left side */
+    border-radius: 5px 0 0 5px;
+    
+    /* Remove the default focus outline that appears when clicked */
+    outline: none;
+    
+    /* Adjust text color and placeholder style */
+    color: #333;
+}
+
+/* Optional: Change border color when the input is focused */
+#searchInput:focus {
+    border-color: rgb(230, 126, 34); /* Use a primary color for focus */
+}
+
+
+/* 3. Style the Search Button */
+#searchButton {
+    padding: 12px 25px;
+    font-size: 16px;
+    color: white; /* White text */
+    
+    /* Primary blue color */
+    background-color: rgb(230, 126, 34);
+    border: 2px solid rgb(230, 126, 34); 
+    
+    /* Round the corners only on the right side */
+    border-radius: 0 5px 5px 0;
+    
+    /* Change cursor to indicate it's clickable */
+    cursor: pointer;
+    
+    /* Smooth transition for the hover effect */
+    transition: background-color 0.2s, border-color 0.2s;
+}
+
+/* 4. Button Hover Effect */
+#searchButton:hover {
+    /* Darker blue on hover */
+    background-color: rgb(230, 126, 34); 
+    border-color: rgb(230, 126, 34);
+}
+
+/* public/css/style.css */
+
+.delete-btn {
+    background-color: #ff4d4d; /* Red */
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    margin-top: 10px;
+    transition: background 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #cc0000; /* Darker Red */
+}
+
+/* Edit Recipe page styles */
+.container h2 {
+    color: #203740;
+    font-size: 1.6rem;
+    margin-bottom: 12px;
+}
+
+#edit-recipe-form {
+    max-width: 900px;
+    margin: 18px auto 36px auto;
+    background: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.04);
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 18px;
+}
+
+#edit-recipe-form label {
+    font-weight: 600;
+    font-size: 0.95rem;
+    display: block;
+    margin-bottom: 6px;
+}
+
+/* Align labels vertically with their inputs in the two-column grid */
+#edit-recipe-form label {
+    align-self: center;
+}
+
+/* Make the Title label and input span the full form width like Description */
+#edit-recipe-form label[for="title"] {
+    grid-column: 1 / -1;
+    align-self: start;
+    margin-top: 4px;
+}
+
+#edit-recipe-form input#title {
+    grid-column: 1 / -1;
+}
+
+#edit-recipe-form input[type="text"],
+#edit-recipe-form input[type="url"],
+#edit-recipe-form textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #d6d6d6;
+    border-radius: 6px;
+    background: #fff;
+    box-sizing: border-box;
+    font-size: 0.95rem;
+}
+
+/* Make single-line inputs visually consistent and slightly taller */
+#edit-recipe-form input[type="text"],
+#edit-recipe-form input[type="url"] {
+    height: 42px;
+}
+
+#edit-recipe-form textarea { min-height: 110px; resize: vertical; }
+
+/* Make the textarea fields span full width */
+#edit-recipe-form textarea[name="description"],
+#edit-recipe-form textarea[name="ingredients"],
+#edit-recipe-form textarea[name="instructions"] {
+    grid-column: 1 / -1;
+}
+
+/* Place the image URL full width as well */
+#edit-recipe-form input[name="imageUrl"] { grid-column: 1 / -1; }
+
+#edit-recipe-form button[type="submit"] {
+    grid-column: 1 / -1;
+    background-color: #2ecc71;
+    color: #fff;
+    padding: 12px 18px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+#edit-recipe-form button[type="submit"]:hover {
+    background-color: #28b865;
+}
+
+#status-message {
+    max-width: 900px;
+    margin: 8px auto 28px auto;
+    padding: 10px 14px;
+    border-radius: 6px;
+    font-weight: 600;
+    display: none;
+}
+
+#status-message.success { display: block; background: #e9f8ef; color: #1b6a3a; border: 1px solid #c6efd4; }
+#status-message.error { display: block; background: #fff2f2; color: #9b2b2b; border: 1px solid #f1c6c6; }
+
+@media (max-width: 800px) {
+    #edit-recipe-form { grid-template-columns: 1fr; padding: 16px; }
+}
+
+/* File preview styles */
+.file-preview-image {
+    max-width: 220px;
+    max-height: 140px;
+    display: block;
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+    box-shadow: 0 6px 14px rgba(0,0,0,0.06);
+}
+
+/* Remove button for chosen image file */
+.image-cancel-btn {
+    display: inline-block;
+    margin-top: 8px;
+    margin-left: 12px;
+    padding: 6px 10px;
+    background: #f44336;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.9rem;
+}
+.image-cancel-btn:hover { background: #d4362a; }
+@media (max-width: 420px) {
+    .prefs-panel label { flex-direction: column; align-items: flex-start; }
+    .prefs-panel select { width: 100%; }
+    .prefs-actions { flex-direction: row; gap:10px; }
+}
+
+/* Align file input on edit/submit forms to the left edge */
+#edit-recipe-form input[type="file"] {
+    grid-column: 1 / -1;
+    justify-self: start;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+/* Also apply same left alignment within submit form section if present */
+.submit-form input[type="file"] {
+    justify-self: start;
+    display: inline-block;
+    margin-top: 6px;
+}
+
+/* About page styles */
+.about-us {
+    max-width: 1000px;
+    margin: 32px auto;
+    background: #fff;
+    padding: 28px;
+    border-radius: 8px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+}
+
+.about-us h2 {
+    margin-top: 0;
+    color: #2c3e50;
+    font-size: 1.8rem;
+}
+
+.about-us p {
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 1em;
+}
+
+.team-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 16px;
+    margin-top: 12px;
+}
+
+.team-member {
+    background: linear-gradient(180deg,#ffffff,#fbfbfb);
+    border: 1px solid #eee;
+    padding: 14px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+}
+
+.team-member h4 {
+    margin: 0 0 6px 0;
+    color: #1f4b5b;
+    font-size: 1.05rem;
+}
+
+.team-member p {
+    margin: 0;
+    color: #666;
+}
+
+/* Avatar inside team member cards */
+.team-member { display: flex; gap: 12px; align-items: center; }
+.team-avatar {
+    width: 72px;
+    height: 72px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+}
+.team-member > div { flex: 1; }
+
+@media (max-width: 700px) {
+    .about-us { padding: 18px; margin: 18px; }
+    .about-us h2 { font-size: 1.4rem; }
+}

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Details</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<header>
+    <nav>
+        <div class="logo">
+            <a href="index.html"><h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1></a>
+        </div>
+        <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="recipes.html">Recipes</a></li>
+            <li><a href="my-recipes.html">My Recipes</a></li>
+            <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li id="login-link"><a href="login.html">Login</a></li>
+            <li id="register-link"><a href="register.html">Register</a></li>
+            <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+        </ul>
+    </nav>
+</header>
+
+<main style="margin:20px;">
+    <section class="recipe-detail-section">
+        <h1 id="recipe-title">Loading...</h1>
+        <img id="recipe-image" height="400" width="600" alt="Recipe Image" style="display:block;margin:0 auto;">
+        <p id="recipe-description"></p>
+
+        <h3>Ingredients</h3>
+        <pre id="recipe-ingredients"></pre>
+
+        <h3>Instructions</h3>
+        <pre id="recipe-instructions"></pre>
+    </section>
+</main>
+
+<section class="reviews-section">
+    <h2>⭐️ User Comments & Reviews</h2>
+
+    <div id="review-form-container" style="display:none;">
+        <h3>Share Your Experience</h3>
+        <form id="review-form">
+            <label for="review-rating">Rating:</label>
+            <select id="review-rating" required>
+                <option value="5">⭐⭐⭐⭐⭐ (Excellent)</option>
+                <option value="4">⭐⭐⭐⭐ (Good)</option>
+                <option value="3">⭐⭐⭐ (Average)</option>
+                <option value="2">⭐⭐ (Fair)</option>
+                <option value="1">⭐ (Poor)</option>
+            </select>
+
+            <textarea id="review-text" rows="4" placeholder="Write your comment here..." required></textarea>
+            <button type="submit">Submit Review</button>
+        </form>
+    </div>
+    
+    <p id="login-to-comment-message">Please <a href="login.html">log in</a> to post a review.</p>
+
+    <div id="reviews-container">
+        <p>No reviews yet. Be the first to share your thoughts!</p>
+    </div>
+</section>
+
+<footer>
+    <p>&copy; 2025 APNA KITCHEN. All rights reserved.</p>
+</footer>
+<script src="js/nav.js"></script>
+<script src="js/recipe-detail.js"></script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+node_modules
+.env
+
+# IDE / Android Studio
+.idea
+*.iml
+.gradle
+build
+app/build
+local.properties
+
+# Local portable Node / CLI tools
+node.exe
+npm
+npm.cmd
+npm.ps1
+npx
+npx.cmd
+npx.ps1
+corepack
+corepack.cmd
+nodevars.bat
+install_tools.bat
+
+# Local tunnels / launchers
+ngrok
+START_APNA_KITCHEN.bat
+
+# Accidental temp files
+{

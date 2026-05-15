@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>APNA KITCHEN</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    
+
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1>
+                </a>
+            </div>
+            <ul>
+                <li><a href="recipes.html">Recipes</a></li>
+                 <li><a href="my-recipes.html">My Recipes</a></li>
+                <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li id="register-link"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+<section class="hero">
+    <div class="slideshow-container">
+        <img class="hero-slide active" src="https://thumbs.dreamstime.com/b/stunning-aerial-view-authentic-carbonara-pasta-fine-italian-restaurant-deliciously-plated-gourmet-food-experience-354685850.jpg" alt="Deliciously plated pasta">
+        <img class="hero-slide " src="https://cdn.loveandlemons.com/wp-content/uploads/2021/04/green-salad.jpg" alt="Fresh ingredients for a salad">
+        <img class="hero-slide " src="https://tse1.mm.bing.net/th/id/OIP.g884UHMoHeP-aw0ut_SkQwHaEP?rs=1&pid=ImgDetMain&o=7&rm=3" alt="A variety of baked goods">
+        <img class="hero-slide " src="https://www.eatingwell.com/thmb/m5xUzIOmhWSoXZnY-oZcO9SdArQ=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/article_291139_the-top-10-healthiest-foods-for-kids_-02-4b745e57928c4786a61b47d8ba920058.jpg" alt="food items">
+        <img class="hero-slide " src="https://www.tribunewired.com/wp-content/uploads/2024/03/Top-15-Super-Healthy-Foods-to-Eat-Every-Day.jpg.webp" alt="veriety of vegetables">
+        <img class="hero-slide " src="https://media.licdn.com/dms/image/v2/D4D12AQEHujGYFVdLAQ/article-cover_image-shrink_720_1280/article-cover_image-shrink_720_1280/0/1680816088965?e=2147483647&v=beta&t=j4FdDiUcOZqApIySsCmphBW2McehB2OUJTxRyKHC4H8" alt="Fresh ingredients for a salad">
+    </div>
+    <div class="hero-content">
+        <h2 style="color:white;">Welcome to APNA KITCHEN</h2>
+        <p style="color:white;">Explore a world of flavors or share your own culinary creations with our community.</p>
+        <a href="recipes.html" class="cta-button">Browse Recipes</a>
+    </div>
+</section>
+        <section class="featured-recipes">
+            <h2>Featured Recipes</h2>
+            <div class="recipe-grid">
+                <div class="recipe-card">
+                    <img src="https://tse1.mm.bing.net/th/id/OIP.K3ZD6PUkv0zl_77TC8PDPQHaLH?rs=1&pid=ImgDetMain&o=7&rm=3" alt="Spaghetti Carbonara">
+                    <h3>Spaghetti Carbonara</h3>
+                    <p>A classic Italian pasta dish from Rome. Its richness comes from a creamy sauce made with eggs, hard cheese, cured pork, and black pepper. The key to a perfect Carbonara is using the heat from the cooked pasta to create the sauce, not adding any cream. </p>
+                    <a href="recipe-detail.html?id=68adb4a9fcf413d8f4b349c2" class="read-more">View Recipe</a>
+                </div>
+                <div class="recipe-card">
+                    <img src="https://www.yourhomebasedmom.com/wp-content/uploads/2020/02/chocoalte-lava-cake-for-two.jpg" alt="Chocolate Lava Cake">
+                    <h3>Chocolate Lava Cake</h3>
+                    <p>A decadent dessert with a gooey, warm center. Chocolate Lava Cake, or Molten Chocolate Cake, is a decadent dessert with a rich, moist chocolate cake exterior and a warm, gooey, liquid chocolate center. It's surprisingly easy to make and looks incredibly impressive.</p>
+                    <a href="recipe-detail.html?id=68adb5b8fcf413d8f4b349d1" class="read-more">View Recipe</a>
+                </div>
+                </div>
+        </section>
+    </main>
+    <footer>
+        <p>&copy; 2025 Recipe Share Hub. All rights reserved.</p>
+    </footer>
+
+    <script src="js/slideshow.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const loginLink = document.getElementById('login-link');
+        const registerLink = document.getElementById('register-link');
+        const logoutLink = document.getElementById('logout-link');
+
+        fetch('/api/user/status', {
+            credentials: 'include'  // Include session cookie
+        })
+            .then(response => response.json())
+            .then(data => {
+                if (data.isLoggedIn) {
+                    registerLink.style.display = 'none';
+                    loginLink.innerHTML = `<a href="#">${data.username}</a>`;
+                    logoutLink.style.display = 'block'; // Show the logout link
+                } else {
+                    loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                    registerLink.style.display = 'block';
+                    logoutLink.style.display = 'none'; // Hide the logout link
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching user status:', error);
+                loginLink.innerHTML = `<a href="/login.html">Login</a>`;
+                registerLink.style.display = 'block';
+                logoutLink.style.display = 'none';
+            });
+    });
+</script>
+<script src="js/nav.js"></script>
+</body>
+</html>

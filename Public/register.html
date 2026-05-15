@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                <a href="index.html">
+                    <h1><span style="background: linear-gradient(135deg, #e67e22 0%, #ff9800 100%); color: #fff; padding: 4px 8px; border-radius: 8px; margin-right: 10px; font-weight: 900; font-size: 0.95em; box-shadow: 0 4px 12px rgba(230, 126, 34, 0.3); display: inline-block; letter-spacing: 0.5px; border: 2px solid rgba(255, 255, 255, 0.2);">AK</span>APNA KITCHEN</h1>
+                </a>
+            </div>
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li><a href="recipes.html">Recipes</a></li>
+                <li><a href="submit-recipe.html">Submit a Recipe</a></li>
+                <li><a href="about.html">About Us</a></li>
+                <li id="login-link"><a href="login.html">Login</a></li>
+                <li id="register-link"><a href="register.html">Register</a></li>
+                <li id="logout-link" style="display:none;"><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="auth-container">
+            <h2>Register</h2>
+            <form id="registerForm" action="/register" method="POST">
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+                
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+
+                <label for="personality">Personality:</label>
+                <select id="personality" name="personality" required>
+                    <option value="friendly">Friendly</option>
+                    <option value="fast">Fast</option>
+                    <option value="bold">Bold</option>
+                    <option value="sweet">Sweet</option>
+                    <option value="healthy">Healthy</option>
+                    <option value="caring">Caring</option>
+                    <option value="adventurous">Adventurous</option>
+                    <option value="premium">Premium</option>
+                    <option value="simple">Simple</option>
+                    <option value="chill">Chill</option>
+                    <option value="social">Social</option>
+                    <option value="traditional">Traditional</option>
+                </select>
+
+                <input type="hidden" id="avatarId" name="avatarId" value="chef-classic">
+                <div class="avatar-picker-header">Choose your avatar</div>
+                <div id="avatar-picker" class="avatar-picker" aria-label="Avatar options"></div>
+                
+                <button type="submit">Register</button>
+            </form>
+             <div id="message" style="color: red; margin-top: 15px;"></div>
+        </div>
+    </main>
+
+    <footer>
+        <p>&copy; 2025 APNA KITCHEN. All rights reserved.</p>
+    </footer>
+    <script src="js/avatars.js"></script>
+    <script>
+    const form = document.getElementById('registerForm');
+    const messageDiv = document.getElementById('message');
+    const avatarPicker = document.getElementById('avatar-picker');
+    const avatarInput = document.getElementById('avatarId');
+    const personalitySelect = document.getElementById('personality');
+
+    function selectAvatar(avatarId) {
+        avatarInput.value = avatarId;
+        const avatar = getApnaAvatar(avatarId);
+        personalitySelect.value = avatar.personality;
+
+        document.querySelectorAll('.avatar-option').forEach((button) => {
+            button.classList.toggle('selected', button.dataset.avatarId === avatarId);
+        });
+    }
+
+    APNA_AVATARS.forEach((avatar) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'avatar-option';
+        button.dataset.avatarId = avatar.id;
+        button.appendChild(createAvatarBadge(avatar.id, 'avatar-badge-large'));
+
+        const label = document.createElement('span');
+        label.textContent = avatar.name;
+        button.appendChild(label);
+
+        button.addEventListener('click', () => selectAvatar(avatar.id));
+        avatarPicker.appendChild(button);
+    });
+
+    personalitySelect.addEventListener('change', () => {
+        const matchingAvatar = APNA_AVATARS.find((avatar) => avatar.personality === personalitySelect.value);
+        if (matchingAvatar) selectAvatar(matchingAvatar.id);
+    });
+
+    selectAvatar(avatarInput.value);
+
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault(); // Prevents the default form submission
+
+        messageDiv.textContent = ''; // Clear any previous messages
+
+        const username = form.username.value;
+        const email = form.email.value;
+        const password = form.password.value;
+        const personality = form.personality.value;
+        const avatarId = form.avatarId.value;
+
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                credentials: 'include',  // Include session cookie
+                body: JSON.stringify({ username, email, password, personality, avatarId })
+            });
+
+            const result = await response.json();
+
+            if (response.status === 409) {
+                // Display the "User already exists" message
+                messageDiv.textContent = result.message || 'User already exists.';
+            } else if (response.ok) {
+                // Success case
+                localStorage.setItem('user_id', result.userId);
+                localStorage.setItem('avatar_id', result.avatarId);
+                localStorage.setItem('personality', result.personality);
+                messageDiv.style.color = 'green';
+                messageDiv.textContent = 'Registration successful!';
+                setTimeout(() => { window.location.href = '/index.html'; }, 800);
+            } else {
+                // Other errors
+                messageDiv.textContent = result.message || 'An error occurred during registration.';
+            }
+        } catch (error) {
+            messageDiv.textContent = 'Network error. Please try again.';
+        }
+    });
+</script>
+</body>
+</html>
