@@ -323,7 +323,10 @@ app.get('/api/recipes', async (req, res) => {
     try {
         const recipes = await Recipe.find().sort({ createdAt: -1 });
         res.json(recipes.map(recipe => recipeResponse(recipe, req.query.username)));
-    } catch (err) { res.status(500).send(err); }
+    } catch (err) {
+        console.error('GET /api/recipes failed:', err);
+        res.status(500).json({ message: err.message || 'Server Error' });
+    }
 });
 
 app.get('/api/recipes/user', async (req, res) => {
@@ -331,7 +334,10 @@ app.get('/api/recipes/user', async (req, res) => {
         const { username } = req.query;
         const recipes = await Recipe.find({ username: username }).sort({ createdAt: -1 });
         res.json(recipes.map(recipe => recipeResponse(recipe, username)));
-    } catch (err) { res.status(500).send(err); }
+    } catch (err) {
+        console.error('GET /api/recipes/user failed:', err);
+        res.status(500).json({ message: err.message || 'Server Error' });
+    }
 });
 
 app.get('/api/recipes/:id', async (req, res) => {
